@@ -2,13 +2,13 @@
 -- When importing this file in phpMyAdmin, use the ANSI dialect
 -- --
 
-CREATE TABLE `ul_blocked_ips` (
+CREATE TABLE `ul_blocked_ips` IF NOT EXISTS (
   `ip` varchar(39) CHARACTER SET ascii NOT NULL,
   `block_expires` varchar(26) CHARACTER SET ascii NOT NULL,
   PRIMARY KEY (`ip`)
 );
 
-CREATE TABLE `ul_log` (
+CREATE TABLE `ul_log` IF NOT EXISTS (
   `timestamp` varchar(26) CHARACTER SET ascii NOT NULL,
   `action` varchar(20) CHARACTER SET ascii NOT NULL,
   `comment` varchar(255) CHARACTER SET ascii NOT NULL DEFAULT '',
@@ -16,7 +16,7 @@ CREATE TABLE `ul_log` (
   `ip` varchar(39) CHARACTER SET ascii NOT NULL
 );
 
-CREATE TABLE `ul_logins` (
+CREATE TABLE `ul_logins` IF NOT EXISTS (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
   `usergroup` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `ul_logins` (
   UNIQUE KEY `username` (`username`(255))
 ) AUTO_INCREMENT=1 ;
 
-CREATE TABLE `ul_nonces` (
+CREATE TABLE `ul_nonces` IF NOT EXISTS (
   `code` varchar(100) CHARACTER SET ascii NOT NULL,
   `action` varchar(850) CHARACTER SET ascii NOT NULL,
   `nonce_expires` varchar(26) CHARACTER SET ascii NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE `ul_nonces` (
   UNIQUE KEY `action` (`action`(255))
 );
 
-CREATE TABLE `ul_sessions` (
+CREATE TABLE `ul_sessions` IF NOT EXISTS (
   `id` varchar(128) CHARACTER SET ascii NOT NULL DEFAULT '',
   `data` blob NOT NULL,
   `session_expires` varchar(26) CHARACTER SET ascii NOT NULL,
