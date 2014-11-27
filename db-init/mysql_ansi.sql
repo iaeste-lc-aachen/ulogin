@@ -12,14 +12,14 @@ CREATE TABLE IF NOT EXISTS `ul_log`(
   `timestamp` varchar(26) CHARACTER SET ascii NOT NULL,
   `action` varchar(20) CHARACTER SET ascii NOT NULL,
   `comment` varchar(255) CHARACTER SET ascii NOT NULL DEFAULT '',
-  `user` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
+  `user` varchar(255) /*COLLATE utf8_unicode_ci*/ NOT NULL,
   `ip` varchar(39) CHARACTER SET ascii NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `ul_logins`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(2048) CHARACTER SET ascii NOT NULL,
+  `username` varchar(255) /*COLLATE utf8_unicode_ci*/ NOT NULL,
+  `password` text /*CHARACTER SET ascii*/ NOT NULL,
   `date_created` varchar(26) CHARACTER SET ascii NOT NULL,
   `last_login` varchar(26) CHARACTER SET ascii NOT NULL,
   `block_expires` varchar(26) CHARACTER SET ascii NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `ul_logins`(
 
 CREATE TABLE IF NOT EXISTS `ul_nonces`(
   `code` varchar(100) CHARACTER SET ascii NOT NULL,
-  `action` varchar(850) CHARACTER SET ascii NOT NULL,
+  `action` text /*CHARACTER SET ascii*/ NOT NULL,
   `nonce_expires` varchar(26) CHARACTER SET ascii NOT NULL,
   PRIMARY KEY (`code`),
   UNIQUE KEY `action` (`action`(255))

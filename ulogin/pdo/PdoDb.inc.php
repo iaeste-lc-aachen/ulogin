@@ -11,11 +11,13 @@ class ulPdoDb
 	private static $dbmode;
 	private static $preparedStmts;
 	private static $errorCode;
+	private static $diverErrorCode;
 	private static $errorMsg;
 
 	private static function Error($errinf)
 	{
 		self::$errorCode = $errinf[0];
+		self::$diverErrorCode = $errinf[1];
 		self::$errorMsg = $errinf[2];
 		return false;
 	}
@@ -193,6 +195,11 @@ class ulPdoDb
 	public static function ErrorCode()
 	{
 		return self::$errorCode;
+	}
+
+	public static function DiverErrorCode()
+	{
+		self::$diverErrorCode;
 	}
 
 	public static function ErrorMsg()

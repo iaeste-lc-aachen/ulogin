@@ -11,6 +11,7 @@ class ulPdoSessionStorage
 		if (isset($this->lock_acquired[$id]))
 			return true;
 
+		$mySQLDuplicateKeyErrors = array( '1062', '1586' );
 		$session_expires = ulUtils::date_seconds_add(new DateTime(), $this->lifetime)->format(UL_DATETIME_FORMAT);
 		$lock_expires = ulUtils::date_seconds_add(new DateTime(), $this->max_execution_time)->format(UL_DATETIME_FORMAT);
 
@@ -29,7 +30,8 @@ class ulPdoSessionStorage
 			)
 		))
 		{
-			if (ulPdoDb::ErrorCode() == '23000')
+			if ( ulPdoDb::ErrorCode() === '23000'
+				|| ulPdoDb::ErrorCode() === 'HY000' && in_array( ulPdoDb::DiverErrorCode(), $mySQLDuplicateKeyErrors ) )
 			{
 				// The insert failed because of a duplicate key, meaning the session
 				// already exists. So try to acquire a lock.
@@ -58,13 +60,11 @@ class ulPdoSessionStorage
 
 					if ($stmt->rowCount() > 0)
 						$this->lock_acquired[$id] = true;
-          else
-            usleep(100000);    // 100ms
+					else
+						usleep(100000);    // 100ms
 				}
 				// Okay, we have a lock and theoretically an exclusive access
-			}
-			else
-			{
+			} else {
 				// No, it wasn't a duplicate record... let's fail miserably.
 				ul_db_fail('Session management error.');
 				return false;
