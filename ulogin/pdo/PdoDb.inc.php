@@ -11,13 +11,13 @@ class ulPdoDb
 	private static $dbmode;
 	private static $preparedStmts;
 	private static $errorCode;
-	private static $diverErrorCode;
+	private static $driverErrorCode;
 	private static $errorMsg;
 
 	private static function Error($errinf)
 	{
 		self::$errorCode = $errinf[0];
-		self::$diverErrorCode = $errinf[1];
+		self::$driverErrorCode = $errinf[1];
 		self::$errorMsg = $errinf[2];
 		return false;
 	}
@@ -197,9 +197,9 @@ class ulPdoDb
 		return self::$errorCode;
 	}
 
-	public static function DiverErrorCode()
+	public static function DriverErrorCode()
 	{
-		self::$diverErrorCode;
+		self::$driverErrorCode;
 	}
 
 	public static function ErrorMsg()

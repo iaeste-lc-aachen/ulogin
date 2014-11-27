@@ -31,7 +31,8 @@ class ulPdoSessionStorage
 		))
 		{
 			if ( ulPdoDb::ErrorCode() === '23000'
-				|| ulPdoDb::ErrorCode() === 'HY000' && in_array( ulPdoDb::DiverErrorCode(), $mySQLDuplicateKeyErrors ) )
+				|| ulPdoDb::ErrorCode() === 'HY000' && in_array( ulPdoDb::DiverErrorCode(), $mySQLDuplicateKeyErrors )
+				|| 1 === preg_match( '/^Duplicate entry \'[0-9a-f]+\' for key \d+$/', ulPdoDb::ErrorMsg() ) )
 			{
 				// The insert failed because of a duplicate key, meaning the session
 				// already exists. So try to acquire a lock.
