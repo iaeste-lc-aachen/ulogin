@@ -356,9 +356,12 @@ class uLogin
 	// automatically.
 	// If the user is not blocked, returns a DateTime from the past.
 	// Returns false on error.
+	public function UserBlockExpiry($uid) {
+		return $this->Backend->UserBlocked($uid);
+	}
 	public function IsUserBlocked($uid)
 	{
-		return $this->Backend->UserBlocked($uid) == true;
+		return $this->Backend->UserBlocked($uid) > new DateTime();
 	}
 
 	public function SetAutologin($username, $enable)
