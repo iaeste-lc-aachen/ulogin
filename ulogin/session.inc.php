@@ -66,7 +66,7 @@ class ulSessionManager
 		self::EnsureStorage();
 
 		// Set session cookie options
-		session_name('SSESID');
+		session_name(UL_SSESID);
 		session_set_cookie_params(0, '/', (UL_DOMAIN === 'localhost') ? '' : UL_DOMAIN, ulUtils::IsHTTPS(), true);
 		session_start();
 	}
@@ -154,7 +154,7 @@ class ulSessionManager
 		if (!UL_PREVENT_REPLAY)
 			return;
 
-		$cookieName = 'SSESTOKEN';
+		$cookieName = UL_SSESTOKEN;
 		$cookieData = ulNonce::Create('ulSessionToken', UL_SESSION_EXPIRE);
 
 		setcookie($cookieName, $cookieData, 0, '/', (UL_DOMAIN === 'localhost') ? '' : UL_DOMAIN, ulUtils::IsHTTPS(), true);
@@ -165,7 +165,7 @@ class ulSessionManager
 		if (!UL_PREVENT_REPLAY)
 			return true;
 
-		$cookieName = 'SSESTOKEN';
+		$cookieName = UL_SSESTOKEN;
 
 		if (!isset($_COOKIE[$cookieName]))
 			return false;

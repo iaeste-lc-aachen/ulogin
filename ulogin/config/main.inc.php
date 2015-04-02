@@ -186,6 +186,9 @@ define('UL_SITE_ROOT_DIR', '/var/www/mywebdir/htdocs');
 //	SESSIONS
 // ------------------------------------------------
 
+define('UL_SSESTOKEN', 'SSESTOKEN');
+define('UL_SSESID', 'SSESID');
+
 // If true, a secure session will be automatically started on every page
 // without having to call sses_start().
 define('UL_SESSION_AUTOSTART', true);
