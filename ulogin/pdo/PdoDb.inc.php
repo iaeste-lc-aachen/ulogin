@@ -239,4 +239,3 @@ class ulPdoDb
 		return true;
 	}
 }
-?>

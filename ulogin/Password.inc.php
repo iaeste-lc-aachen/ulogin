@@ -251,7 +251,7 @@ class ulPassword
       }
 
 			// We must not preprocess here to stay compatible with other applications
-      return '{PBKDF2}' . $hash_algo . ':' . $hash_rounds . ':' .  $salt . ':' . 
+      return '{PBKDF2}' . $hash_algo . ':' . $hash_rounds . ':' .  $salt . ':' .
         base64_encode(pbkdf2(
             $hash_algo,
             $password,
@@ -266,7 +266,7 @@ class ulPassword
       // For compatibility with older versions, an empty string is the same as '{BCRYPT}'
       if (ulUtils::BeginsWith($salt, '{BCRYPT}'))
         $salt = substr($salt, 8);
-        
+
 			if ($salt == '') $salt = self::BCryptSalt();
 			return crypt(self::PreProcess($password),  $salt);
 		}
@@ -316,4 +316,3 @@ class ulPassword
 		return ($calculated_hash == $stored_hash);
 	}
 }
-?>

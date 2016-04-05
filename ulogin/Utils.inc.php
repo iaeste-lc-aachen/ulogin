@@ -197,7 +197,7 @@ class ulUtils
 
       if (empty($ip))
         $ip = $_SERVER['REMOTE_ADDR'];
-        
+
       return $ip;
     }
     else
@@ -221,12 +221,10 @@ class ulUtils
   {
     return (false !== filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE));
   }
-  
+
   public static function PreventCaching()
   {
     header("Expires: 0");
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
   }
 }
-
-?>

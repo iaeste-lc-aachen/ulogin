@@ -15,7 +15,7 @@ class ulIpBlocker
 		{
 			// Insert new IP, or extend block if it already exists
 			$block_expires = ulUtils::date_seconds_add(new DateTime(), $block)->format(UL_DATETIME_FORMAT);
-			$stmt = ulPdoDb::Prepare('log', 'INSERT INTO ul_blocked_ips (ip, block_expires) VALUES (?, ?)');
+			$stmt = ulPdoDb::Prepare('log', 'INSERT INTO ' . UL_PDO_TABLE_PREFIX . 'ul_blocked_ips (ip, block_expires) VALUES (?, ?)');
 			$query_ret = ulPdoDb::BindExec(
 				$stmt,
 				NULL,		// output
@@ -28,7 +28,7 @@ class ulIpBlocker
 			if (!$query_ret && (ulPdoDb::ErrorCode() == '23000'))
 			{
 				// IP already in the list, so update
-				$stmt = ulPdoDb::Prepare('log', 'UPDATE ul_blocked_ips SET block_expires=? WHERE ip=?');
+				$stmt = ulPdoDb::Prepare('log', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_blocked_ips SET block_expires=? WHERE ip=?');
 				$query_ret = ulPdoDb::BindExec(
 					$stmt,
 					NULL,		// output
@@ -41,7 +41,7 @@ class ulIpBlocker
 		}
 		else
 		{
-			$stmt = ulPdoDb::Prepare('log', 'DELETE FROM ul_blocked_ips WHERE ip=?');
+			$stmt = ulPdoDb::Prepare('log', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_blocked_ips WHERE ip=?');
 			$query_ret = ulPdoDb::BindExec(
 				$stmt,
 				NULL,		// output
@@ -69,7 +69,7 @@ class ulIpBlocker
 	{
 		$block_expires = NULL;
 
-		$stmt = ulPdoDb::Prepare('log', 'SELECT block_expires FROM ul_blocked_ips WHERE ip=?');
+		$stmt = ulPdoDb::Prepare('log', 'SELECT block_expires FROM ' . UL_PDO_TABLE_PREFIX . 'ul_blocked_ips WHERE ip=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -98,4 +98,3 @@ class ulIpBlocker
 		return $block_expires;
 	}
 }
-?>

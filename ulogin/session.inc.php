@@ -415,5 +415,3 @@ function sses_invalidated()
 {
 	return ulSessionManager::$TrustInvalidated;
 }
-
-?>

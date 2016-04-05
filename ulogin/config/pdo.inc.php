@@ -9,8 +9,11 @@
 
 // Connection string to use for connecting to a PDO database.
 define('UL_PDO_CON_STRING', 'mysql:host=127.0.0.1;dbname=ulogin');
-// Example for SQLite: 
+// Example for SQLite:
 //define('UL_PDO_CON_STRING', 'sqlite:/path/to/db.sqlite');
+
+// Table prefix in the database
+define('UL_PDO_TABLE_PREFIX', $prefix);
 
 // SQL query to execute at the start of each PDO connection.
 // For example, "SET NAMES 'UTF8'" if your database engine supports it.

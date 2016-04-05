@@ -73,7 +73,7 @@ class ulLog
 			return true;
 
 		$now = ulUtils::nowstring();
-		$stmt = ulPdoDb::Prepare('log', 'INSERT INTO ul_log (timestamp, action, comment, user, ip) VALUES (?, ?, ?, ?, ?)');
+		$stmt = ulPdoDb::Prepare('log', 'INSERT INTO ' . UL_PDO_TABLE_PREFIX . 'ul_log (timestamp, action, comment, user, ip) VALUES (?, ?, ?, ?, ?)');
 		return ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -97,7 +97,7 @@ class ulLog
 		if (UL_MAX_LOG_AGE > 0)
 		{
 			$max_log_age = ulUtils::date_seconds_sub(new DateTime(), UL_MAX_LOG_AGE)->format(UL_DATETIME_FORMAT);
-			$stmt = ulPdoDb::Prepare('log', 'DELETE FROM ul_log WHERE timestamp<?');
+			$stmt = ulPdoDb::Prepare('log', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log WHERE timestamp<?');
 			if (!ulPdoDb::BindExec(
 				$stmt,
 				NULL,		// output
@@ -113,7 +113,7 @@ class ulLog
 		if (UL_MAX_LOG_RECORDS > 0)
 		{
 			$log_num_rows = 0;
-			$stmt = ulPdoDb::Prepare('log', 'SELECT COUNT(*) FROM ul_log');
+			$stmt = ulPdoDb::Prepare('log', 'SELECT COUNT(*) FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log');
 			if (!ulPdoDb::BindExec(
 				$stmt,
 				array(		// output
@@ -130,7 +130,7 @@ class ulLog
 			if ($log_num_rows > UL_MAX_LOG_RECORDS)
 			{
 				$num_log_delete = $log_num_rows - UL_MAX_LOG_RECORDS;
-				$stmt = ulPdoDb::Prepare('log', 'DELETE FROM ul_log ORDER BY timestamp ASC LIMIT ?');
+				$stmt = ulPdoDb::Prepare('log', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log ORDER BY timestamp ASC LIMIT ?');
 				if (!ulPdoDb::BindExec(
 					$stmt,
 					NULL,		// output
@@ -161,7 +161,7 @@ class ulLog
 		// Get the number of login attempts to an account
 		$user_login_attempts = 0;
 		$time_before_window = ulUtils::date_seconds_sub(new DateTime(), $window)->format(UL_DATETIME_FORMAT);
-		$stmt = ulPdoDb::Prepare('log', 'SELECT COUNT(*) FROM ul_log WHERE action=? AND timestamp>? AND user=?');
+		$stmt = ulPdoDb::Prepare('log', 'SELECT COUNT(*) FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log WHERE action=? AND timestamp>? AND user=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -196,7 +196,7 @@ class ulLog
 		// Get the number of login attempts to an account
 		$ip_login_attempts = 0;
 		$time_before_window = ulUtils::date_seconds_sub(new DateTime(), $window)->format(UL_DATETIME_FORMAT);
-		$stmt = ulPdoDb::Prepare('log', 'SELECT COUNT(*) FROM ul_log WHERE action=? AND timestamp>? AND ip=?');
+		$stmt = ulPdoDb::Prepare('log', 'SELECT COUNT(*) FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log WHERE action=? AND timestamp>? AND ip=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -230,7 +230,7 @@ class ulLog
 
 		// Get the number of login attempts to an account
 		$last_login = '';
-		$stmt = ulPdoDb::Prepare('log', "SELECT timestamp FROM ul_log WHERE user=? AND action='auth-success' ORDER BY timestamp DESC LIMIT 1");
+		$stmt = ulPdoDb::Prepare('log', 'SELECT timestamp FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log WHERE user=? AND action=\'auth-success\' ORDER BY timestamp DESC LIMIT 1');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -265,7 +265,7 @@ class ulLog
 
 		// Get the number of login attempts to an account
 		$last_login = '';
-		$stmt = ulPdoDb::Prepare('log', "SELECT timestamp FROM ul_log WHERE ip=? AND action='auth-success' ORDER BY timestamp DESC LIMIT 1");
+		$stmt = ulPdoDb::Prepare('log', 'SELECT timestamp FROM ' . UL_PDO_TABLE_PREFIX . 'ul_log WHERE ip=? AND action=\'auth-success\' ORDER BY timestamp DESC LIMIT 1');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -288,4 +288,3 @@ class ulLog
 		return time()-strtotime($last_login);
 	}
 }
-?>

@@ -7,5 +7,3 @@ if (php_sapi_name() != 'cli')	// we don't want a session if running in cli
 		sses_start();
 	}
 }
-
-?>

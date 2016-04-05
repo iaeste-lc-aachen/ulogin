@@ -18,7 +18,7 @@ class ulPdoSessionStorage
 		// Try inserting a new session in every case, in a locked state
 		$stmt = ulPdoDb::Prepare(
 			'session',
-			"INSERT INTO ul_sessions (id, data, session_expires, lock_expires) VALUES (?, '', ?, ?)"
+			'INSERT INTO ' . UL_PDO_TABLE_PREFIX . 'ul_sessions (id, data, session_expires, lock_expires) VALUES (?, \'\', ?, ?)'
 		);
 		if (!ulPdoDb::BindExec(
 			$stmt,
@@ -43,7 +43,7 @@ class ulPdoSessionStorage
 					$now = ulUtils::nowstring();
 					$session_expires = ulUtils::date_seconds_add(new DateTime(), $this->lifetime)->format(UL_DATETIME_FORMAT);
 					$lock_expires = ulUtils::date_seconds_add(new DateTime(), $this->max_execution_time)->format(UL_DATETIME_FORMAT);
-					$stmt = ulPdoDb::Prepare('session', 'UPDATE ul_sessions SET session_expires=?, lock_expires=? WHERE id=? AND lock_expires<?');
+					$stmt = ulPdoDb::Prepare('session', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_sessions SET session_expires=?, lock_expires=? WHERE id=? AND lock_expires<?');
 					if (!ulPdoDb::BindExec(
 						$stmt,
 						NULL,		// output
@@ -84,7 +84,7 @@ class ulPdoSessionStorage
 		// any additional checks.
 
 		$past = date_format(date_create('1000 years ago'), UL_DATETIME_FORMAT);
-		$stmt = ulPdoDb::Prepare('session', 'UPDATE ul_sessions SET lock_expires=? WHERE id=?');
+		$stmt = ulPdoDb::Prepare('session', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_sessions SET lock_expires=? WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -160,7 +160,7 @@ class ulPdoSessionStorage
 
 		// Read database
 		$now = ulUtils::nowstring();
-		$stmt = ulPdoDb::Prepare('session', 'SELECT data FROM ul_sessions WHERE id=? AND session_expires>?');
+		$stmt = ulPdoDb::Prepare('session', 'SELECT data FROM ' . UL_PDO_TABLE_PREFIX . 'ul_sessions WHERE id=? AND session_expires>?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -192,7 +192,7 @@ class ulPdoSessionStorage
 
 		$stmt = ulPdoDb::Prepare(
 			'session',
-			'UPDATE ul_sessions SET data=? WHERE id=?'
+			'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_sessions SET data=? WHERE id=?'
 		);
 		if (!ulPdoDb::BindExec(
 			$stmt,
@@ -210,7 +210,7 @@ class ulPdoSessionStorage
 
 	public function destroy($id)
 	{
-		$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ul_sessions WHERE id=?');
+		$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_sessions WHERE id=?');
 		$ret = ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -227,7 +227,7 @@ class ulPdoSessionStorage
 		$now = ulUtils::nowstring();
 
 		// Delete old sessions
-		$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ul_sessions WHERE session_expires<=?');
+		$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_sessions WHERE session_expires<=?');
 		ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -239,5 +239,3 @@ class ulPdoSessionStorage
 		return true;
 	}
 }
-
-?>

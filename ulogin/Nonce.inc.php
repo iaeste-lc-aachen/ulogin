@@ -145,5 +145,3 @@ class ulNonce
 		return self::CleanVolatile() && self::CleanPersistent();
 	}
 }
-
-?>

@@ -7,7 +7,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 	// current settings. False otherwise.  Used to check cnfiguration.
 	public function AuthTest()
 	{
-		$stmt = ulPdoDb::Prepare('auth', 'SELECT id, username, password, date_created, last_login, block_expires FROM ul_logins LIMIT 1');
+		$stmt = ulPdoDb::Prepare('auth', 'SELECT id, username, password, date_created, last_login, block_expires FROM ' . UL_PDO_TABLE_PREFIX . 'ul_logins LIMIT 1');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,	// output
@@ -36,7 +36,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 	{
 		$pwd_hash = '';
 
-		$stmt = ulPdoDb::Prepare('auth', 'SELECT password FROM ul_logins WHERE id=?');
+		$stmt = ulPdoDb::Prepare('auth', 'SELECT password FROM ' . UL_PDO_TABLE_PREFIX . 'ul_logins WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -73,7 +73,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 	{
 		$username = '';
 
-		$stmt = ulPdoDb::Prepare('auth', 'SELECT username FROM ul_logins WHERE id=?');
+		$stmt = ulPdoDb::Prepare('auth', 'SELECT username FROM ' . UL_PDO_TABLE_PREFIX . 'ul_logins WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -101,7 +101,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 	{
 		$uid = '';
 
-		$stmt = ulPdoDb::Prepare('auth', 'SELECT id FROM ul_logins WHERE username=?');
+		$stmt = ulPdoDb::Prepare('auth', 'SELECT id FROM ' . UL_PDO_TABLE_PREFIX . 'ul_logins WHERE username=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -127,7 +127,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 	function UpdateLastLoginTime($uid)
 	{
 		$now = ulUtils::nowstring();
-		$stmt = ulPdoDb::Prepare('update', 'UPDATE ul_logins SET last_login=? WHERE id=?');
+		$stmt = ulPdoDb::Prepare('update', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_logins SET last_login=? WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -158,7 +158,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 
 		$now = ulUtils::nowstring();
 		$past = date_format(date_create('1000 years ago'), UL_DATETIME_FORMAT);
-		$stmt = ulPdoDb::Prepare('update', 'INSERT INTO ul_logins (username, password, date_created, last_login, block_expires) VALUES (?, ?, ?, ?, ?)');
+		$stmt = ulPdoDb::Prepare('update', 'INSERT INTO ' . UL_PDO_TABLE_PREFIX . 'ul_logins (username, password, date_created, last_login, block_expires) VALUES (?, ?, ?, ?, ?)');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -190,7 +190,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 	// Returns true if successful, an error code otherwise.
 	public function DeleteLogin($uid)
 	{
-		$stmt = ulPdoDb::Prepare('delete', 'DELETE FROM ul_logins WHERE id=?');
+		$stmt = ulPdoDb::Prepare('delete', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_logins WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -216,7 +216,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 		$salt = '';
 		$hashed_pass = ulPassword::Hash($pass, $salt);
 
-		$stmt = ulPdoDb::Prepare('update', 'UPDATE ul_logins SET password=? WHERE id=?');
+		$stmt = ulPdoDb::Prepare('update', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_logins SET password=? WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -247,7 +247,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 		if ($block_secs > 0)
 		{
 			$block_expires = ulUtils::date_seconds_add(new DateTime(), $block_secs)->format(UL_DATETIME_FORMAT);
-			$stmt = ulPdoDb::Prepare('update', 'UPDATE ul_logins SET block_expires=? WHERE id=?');
+			$stmt = ulPdoDb::Prepare('update', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_logins SET block_expires=? WHERE id=?');
 			$query_ret = ulPdoDb::BindExec(
 				$stmt,
 				NULL,		// output
@@ -260,7 +260,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 		else
 		{
 			$past = date_format(date_create('1000 years ago'), UL_DATETIME_FORMAT);
-			$stmt = ulPdoDb::Prepare('update', 'UPDATE ul_logins SET block_expires=?  WHERE id=?');
+			$stmt = ulPdoDb::Prepare('update', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_logins SET block_expires=?  WHERE id=?');
 			$query_ret = ulPdoDb::BindExec(
 				$stmt,
 				NULL,		// output
@@ -294,7 +294,7 @@ class ulPdoLoginBackend extends ulLoginBackend
 		$expires = NULL;
 		$flagged = false;
 
-		$stmt = ulPdoDb::Prepare('auth', 'SELECT block_expires FROM ul_logins WHERE id=?');
+		$stmt = ulPdoDb::Prepare('auth', 'SELECT block_expires FROM ' . UL_PDO_TABLE_PREFIX . 'ul_logins WHERE id=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -316,5 +316,3 @@ class ulPdoLoginBackend extends ulLoginBackend
 		return new DateTime($expires);
  	}
 }
-
-?>

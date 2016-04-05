@@ -9,7 +9,7 @@ function ul_fail($msg, $terminate=true)
     $trace = ob_get_contents();
     ob_end_clean();
     $trace = str_replace(UL_SITE_ROOT_DIR, '', $trace);
-    
+
 		$log_str = 'Error: ' . htmlspecialchars($msg) . '<br/> Stack trace: ' . htmlspecialchars($trace) . '<br/>';
 		echo(nl2br('<div style="background-color:darkred; border:2px solid black; color:yellow; padding:5px;">'.$log_str.'</div>'));
 
@@ -23,4 +23,3 @@ function ul_fail($msg, $terminate=true)
 	else
 		echo(UL_GENERIC_ERROR_MSG);
 }
-?>

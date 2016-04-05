@@ -6,7 +6,7 @@ class ulPdoNonceStore
 	{
 		// Insert new nonce into database
 		$nonce_expires = ulUtils::date_seconds_add(new DateTime(), $expire)->format(UL_DATETIME_FORMAT);
-		$stmt = ulPdoDb::Prepare('session', 'INSERT INTO ul_nonces (code, action, nonce_expires) VALUES (?, ?, ?)');
+		$stmt = ulPdoDb::Prepare('session', 'INSERT INTO ' . UL_PDO_TABLE_PREFIX . 'ul_nonces (code, action, nonce_expires) VALUES (?, ?, ?)');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -20,7 +20,7 @@ class ulPdoNonceStore
 			if (ulPdoDb::ErrorCode() == '23000')
 			{
 				// Probably, the action already exists
-				$stmt = ulPdoDb::Prepare('session', 'UPDATE ul_nonces SET code=?, nonce_expires=? WHERE action=?');
+				$stmt = ulPdoDb::Prepare('session', 'UPDATE ' . UL_PDO_TABLE_PREFIX . 'ul_nonces SET code=?, nonce_expires=? WHERE action=?');
 				if (!ulPdoDb::BindExec(
 					$stmt,
 					NULL,		// output
@@ -52,7 +52,7 @@ class ulPdoNonceStore
 		// See if there is a nonce like the one requested
 		$exists = 0;
 		$now = ulUtils::nowstring();
-		$stmt = ulPdoDb::Prepare('session', 'SELECT COUNT(*) FROM ul_nonces WHERE code=? AND action=? AND nonce_expires>?');
+		$stmt = ulPdoDb::Prepare('session', 'SELECT COUNT(*) FROM ' . UL_PDO_TABLE_PREFIX . 'ul_nonces WHERE code=? AND action=? AND nonce_expires>?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -74,7 +74,7 @@ class ulPdoNonceStore
 		if ($exists > 0)
 		{
 			// We have found a nonce, invalidate it
-			$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ul_nonces WHERE code=? AND action=?');
+			$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_nonces WHERE code=? AND action=?');
 			if (!ulPdoDb::BindExec(
 				$stmt,
 				NULL,		// output
@@ -101,7 +101,7 @@ class ulPdoNonceStore
 	{
 		// See if there is a nonce like the one requested
 		$exists = 0;
-		$stmt = ulPdoDb::Prepare('session', 'SELECT COUNT(*) FROM ul_nonces WHERE action=?');
+		$stmt = ulPdoDb::Prepare('session', 'SELECT COUNT(*) FROM ' . UL_PDO_TABLE_PREFIX . 'ul_nonces WHERE action=?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			array(		// output
@@ -125,7 +125,7 @@ class ulPdoNonceStore
 	{
 		// We have found a nonce, invalidate it
 		$now = ulUtils::nowstring();
-		$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ul_nonces WHERE nonce_expires<?');
+		$stmt = ulPdoDb::Prepare('session', 'DELETE FROM ' . UL_PDO_TABLE_PREFIX . 'ul_nonces WHERE nonce_expires<?');
 		if (!ulPdoDb::BindExec(
 			$stmt,
 			NULL,		// output
@@ -141,4 +141,3 @@ class ulPdoNonceStore
 		return true;
 	}
 }
-?>

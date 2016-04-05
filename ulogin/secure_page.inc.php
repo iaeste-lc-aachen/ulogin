@@ -21,4 +21,3 @@ if (php_sapi_name() != 'cli')	// skip if we are running from the cli
 		}
 	}
 }
-?>

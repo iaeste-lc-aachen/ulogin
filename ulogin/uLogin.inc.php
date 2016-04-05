@@ -48,7 +48,7 @@ class uLogin
 		// See if minimum length requirement is met
 		if (strlen(trim($str)) < 1)
 			return false;
-      
+
     if (strlen(UL_USERNAME_CHECK)>0)
 		{
       return preg_match(UL_USERNAME_CHECK, $str) === 1;
@@ -474,5 +474,3 @@ class uLogin
 		return $uid;
 	}
 }
-
-?>

@@ -8,5 +8,3 @@ class ulPhpDefaultSessionStorage
 		return true;
 	}
 }
-
-?>
